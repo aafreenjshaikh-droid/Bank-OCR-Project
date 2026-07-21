@@ -68,7 +68,7 @@ if uploaded_file is not None:
           )
 
           response = client.chat.completions.create(
-              model="meta-llama/Llama-3.2-11B-Vision-Instruct",  # Actively supported multi-provider vision model
+              model="google/gemma-4-31B-it",  # Actively routed multimodal model
               messages=[{
                   "role":
                   "user",
