@@ -68,7 +68,7 @@ if uploaded_file is not None:
           )
 
           response = client.chat.completions.create(
-              model="HuggingFaceTB/SmolVLM-Instruct",  # Updated supported vision model
+              model="meta-llama/Llama-3.2-11B-Vision-Instruct",  # Actively supported multi-provider vision model
               messages=[{
                   "role":
                   "user",
