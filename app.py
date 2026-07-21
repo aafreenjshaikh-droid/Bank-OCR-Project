@@ -4,29 +4,25 @@ from huggingface_hub import InferenceClient
 from PIL import Image
 import streamlit as st
 
-# Page Configuration
+# 1. MUST BE THE ABSOLUTE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Add Payee via Check Scanner", page_layout="centered"
 )
 
+# 2. Page Header
 st.title("🏦 Add Payee - Bank Check Scanner")
 st.write(
     "Upload a clear image of a bank check to automatically extract details"
     " and fill out the payee form."
 )
 
-# Sidebar for API Configuration securely handled via Streamlit secrets or input
+# Sidebar for API Configuration securely handled via Streamlit input
 st.sidebar.header("Configuration")
 hf_api_key = st.sidebar.text_input(
     "Hugging Face API Key", type="password", help="Enter your HF API key here."
 )
 
-# File uploader widget for the check image
-uploaded_file = st.file_uploader(
-    "Choose a bank check image...", type=["jpg", "jpeg", "png"]
-)
-
-# Initialize session state variables to hold form values dynamically
+# Initialize session state variables to hold form values dynamically safely after config
 if "payee_name" not in st.session_state:
   st.session_state.payee_name = ""
 if "account_number" not in st.session_state:
@@ -39,6 +35,11 @@ if "branch_name" not in st.session_state:
   st.session_state.branch_name = ""
 if "amount" not in st.session_state:
   st.session_state.amount = ""
+
+# File uploader widget for the check image
+uploaded_file = st.file_uploader(
+    "Choose a bank check image...", type=["jpg", "jpeg", "png"]
+)
 
 if uploaded_file is not None:
   # Display preview of the uploaded check
