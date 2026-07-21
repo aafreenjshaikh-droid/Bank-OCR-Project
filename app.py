@@ -4,10 +4,8 @@ from huggingface_hub import InferenceClient
 from PIL import Image
 import streamlit as st
 
-# MUST be the very first Streamlit command in the entire file
-st.set_page_config(
-    page_title="Add Payee via Check Scanner", page_layout="centered"
-)
+# MUST be the absolute first Streamlit command
+st.set_page_config(page_title="Add Payee via Check Scanner", layout="centered")
 
 # App UI Header
 st.title("🏦 Add Payee - Bank Check Scanner")
