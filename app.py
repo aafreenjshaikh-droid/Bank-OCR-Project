@@ -4,25 +4,25 @@ from huggingface_hub import InferenceClient
 from PIL import Image
 import streamlit as st
 
-# 1. MUST BE THE ABSOLUTE FIRST STREAMLIT COMMAND
+# MUST be the very first Streamlit command in the entire file
 st.set_page_config(
     page_title="Add Payee via Check Scanner", page_layout="centered"
 )
 
-# 2. Page Header
+# App UI Header
 st.title("🏦 Add Payee - Bank Check Scanner")
 st.write(
     "Upload a clear image of a bank check to automatically extract details"
     " and fill out the payee form."
 )
 
-# Sidebar for API Configuration securely handled via Streamlit input
+# Sidebar Configuration
 st.sidebar.header("Configuration")
 hf_api_key = st.sidebar.text_input(
     "Hugging Face API Key", type="password", help="Enter your HF API key here."
 )
 
-# Initialize session state variables to hold form values dynamically safely after config
+# Session State Initialization
 if "payee_name" not in st.session_state:
   st.session_state.payee_name = ""
 if "account_number" not in st.session_state:
@@ -36,13 +36,12 @@ if "branch_name" not in st.session_state:
 if "amount" not in st.session_state:
   st.session_state.amount = ""
 
-# File uploader widget for the check image
+# File uploader widget
 uploaded_file = st.file_uploader(
     "Choose a bank check image...", type=["jpg", "jpeg", "png"]
 )
 
 if uploaded_file is not None:
-  # Display preview of the uploaded check
   image = Image.open(uploaded_file)
   st.image(image, caption="Uploaded Bank Check", use_container_width=True)
 
@@ -52,12 +51,10 @@ if uploaded_file is not None:
     else:
       with st.spinner("Analyzing check with Qwen Vision AI..."):
         try:
-          # Convert uploaded image bytes to base64 data URI
           bytes_data = uploaded_file.getvalue()
           b64_data = base64.b64encode(bytes_data).decode("utf-8")
           image_url = f"data:image/jpeg;base64,{b64_data}"
 
-          # Initialize Hugging Face Client
           client = InferenceClient(api_key=hf_api_key)
 
           prompt = (
@@ -98,7 +95,6 @@ if uploaded_file is not None:
 
           parsed_data = json.loads(raw_content)
 
-          # Update session state fields
           st.session_state.payee_name = parsed_data.get("name", "")
           st.session_state.account_number = parsed_data.get(
               "bank_account_number", ""
@@ -114,7 +110,7 @@ if uploaded_file is not None:
               f"Error scanning check: {e}. Please fill out the fields manually."
           )
 
-# --- Payee Frontend Form ---
+# Payee Form
 st.divider()
 st.subheader("Add Payee Details")
 
