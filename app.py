@@ -68,7 +68,7 @@ if uploaded_file is not None:
           )
 
           response = client.chat.completions.create(
-              model="Qwen/Qwen2.5-VL-3B-Instruct",
+              model="HuggingFaceTB/SmolVLM-Instruct",  # Updated supported vision model
               messages=[{
                   "role":
                   "user",
